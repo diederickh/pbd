@@ -51,15 +51,7 @@ void Particles::draw() {
 // Solve
 // -----------------------------------
 void Particles::update() {
-	// project constraints.
-	{
-		vector<Constraint*>::iterator it = constraints.begin();
-		while(it != constraints.end()) {
-			(*it)->update();
-			++it;
-		}
-	}	
-	
+
 	// project position.
 	{
 		vector<Particle*>::iterator it = particles.begin();
@@ -69,15 +61,34 @@ void Particles::update() {
 			// prediction step
 			particle.velocity += particle.forces;
 			particle.predicted_position = particle.position + particle.velocity;
-			
-			// add displacement
-			// ---------------------------------
-			// ---------------------------------
-			
-			// clear forces.
+
 			particle.forces.set(0,0,0);
-			
 			++it;
 		}
 	}
+	
+	// project constraints.
+	{
+		vector<Constraint*>::iterator it = constraints.begin();
+		while(it != constraints.end()) {
+			(*it)->update();
+			++it;
+		}
+	}	
+
+	// update position.
+	{
+		vector<Particle*>::iterator it = particles.begin();
+		while(it != particles.end()) {
+			Particle& particle = **it;
+			// add displacement
+			// ---------------------------------
+			// ---------------------------------
+	
+			++it;
+		}
+	}
+
+	
+
 }
