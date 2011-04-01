@@ -4,6 +4,7 @@
 void testApp::setup(){
 	ofSetFrameRate(60);
 	ofSetVerticalSync(true);
+	ofEnableAlphaBlending();
 	ofBackground(0xfb, 0xec, 0xc0);
 }
 
@@ -40,6 +41,15 @@ void testApp::mouseDragged(int x, int y, int button){
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
 	particles.addParticle(new Particle(ofVec3f(x,y, 0), ofRandom(0.4,2.0)));
+	int size = particles.particles.size();
+	if(size > 1) {
+
+		DistanceConstraint* dist_constraint = new DistanceConstraint(
+			 particles.particles.at(size-2)
+			,particles.particles.at(size-1)
+		);
+		particles.addConstraint(dist_constraint);
+	}
 }
 
 //--------------------------------------------------------------

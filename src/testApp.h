@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "Particles.h"
 #include "Particle.h"
+#include "DistanceConstraint.h"
 
 class testApp : public ofBaseApp{
 
