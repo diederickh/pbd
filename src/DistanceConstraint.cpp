@@ -18,6 +18,8 @@ void DistanceConstraint::update() {
 	dir *= f;
 	
 	// okay now apply the force
+	a->addForce(dir);
+	b->addForce(-dir);
 }
 
 void DistanceConstraint::draw() {
