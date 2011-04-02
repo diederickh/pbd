@@ -23,6 +23,13 @@ void Particles::addDisplacement(ofVec3f oDisplacement) {
 	}
 }
 
+void Particles::addForce(ofVec3f oForce) {
+	vector<Particle*>::iterator it = particles.begin();
+	while(it != particles.end()) {
+		(*it)->addForce(oForce);
+		++it;
+	}
+}
 
 // draw the particles (using simple GL_POIINTS now 
 // ------------------------------------------------
@@ -59,10 +66,12 @@ void Particles::update() {
 			Particle& particle = **it;
 
 			// prediction step
+			particle.velocity += particle.forces;
 			particle.velocity += particle.displacement;
 			particle.predicted_position = particle.position + (particle.velocity * dt);
 
 			particle.displacement.set(0,0,0);
+			particle.forces.set(0,0,0);
 			++it;
 		}
 	}

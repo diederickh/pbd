@@ -13,7 +13,7 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update(){
-	particles.addDisplacement(ofVec3f(0,0.1,0));
+	particles.addForce(ofVec3f(0,0.5,0));
 	for(int i = 0; i < 5; ++i) particles.update();
 }
 
@@ -58,7 +58,7 @@ void testApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-	particles.addParticle(new Particle(ofVec3f(x,y, 0), ofRandom(0.4,2.0)));
+	particles.addParticle(new Particle(ofVec3f(x,y, 0), 1));
 	int size = particles.particles.size();
 	if(size > 1) {
 		DistanceConstraint* dist_constraint = new DistanceConstraint(

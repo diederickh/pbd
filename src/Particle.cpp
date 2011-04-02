@@ -12,7 +12,10 @@ Particle::Particle(ofVec3f oPosition, float nMass)
 	else {
 		inverse_mass = 1/mass;
 	}
-	
+}
+
+void Particle::addForce(ofVec3f oForce) {
+	forces += (oForce * inverse_mass);
 }
 
 void Particle::addDisplacement(ofVec3f oDisplacement) {
