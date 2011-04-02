@@ -7,12 +7,16 @@ Particle::Particle(ofVec3f oPosition, float nMass)
 {
 	if(mass <= 0.0) {	
 		mass = 0.001;
+		inverse_mass = 0;
 	}
-	inverse_mass = 1/mass;
+	else {
+		inverse_mass = 1/mass;
+	}
+	
 }
 
 void Particle::addDisplacement(ofVec3f oDisplacement) {
-	displacement += oDisplacement;
+	displacement += (oDisplacement * inverse_mass);
 }
 
 void Particle::update() {

@@ -22,5 +22,8 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		Particles particles;
+		bool follow;
+		bool record;
+		int frame_num;
 		
 };

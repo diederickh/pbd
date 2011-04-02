@@ -51,7 +51,7 @@ void Particles::draw() {
 // Solve
 // -----------------------------------
 void Particles::update() {
-
+	float dt = 1;
 	// project position:
 	{
 		vector<Particle*>::iterator it = particles.begin();
@@ -60,7 +60,7 @@ void Particles::update() {
 
 			// prediction step
 			particle.velocity += particle.displacement;
-			particle.predicted_position = particle.position + particle.velocity;
+			particle.predicted_position = particle.position + (particle.velocity * dt);
 
 			particle.displacement.set(0,0,0);
 			++it;
@@ -84,7 +84,9 @@ void Particles::update() {
 			// add displacement
 			// ---------------------------------
 			// ---------------------------------
-	
+			particle.velocity = (particle.predicted_position - particle.position)/dt;
+			particle.position = particle.predicted_position;
+			particle.velocity *= 0.98;
 			++it;
 		}
 	}
