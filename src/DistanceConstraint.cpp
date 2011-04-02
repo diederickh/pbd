@@ -7,7 +7,7 @@ DistanceConstraint::DistanceConstraint(Particle* pA, Particle* pB)
 ,Constraint()
 {
 	rest_length = (b->position - a->position).length();
-	k = 0.1;
+	k = 0.007;
 }
 
 
