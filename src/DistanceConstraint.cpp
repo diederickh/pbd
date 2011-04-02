@@ -10,6 +10,8 @@ DistanceConstraint::DistanceConstraint(Particle* pA, Particle* pB)
 	k = 0.01;
 }
 
+
+// lines 9-11
 void DistanceConstraint::update() {
 	ofVec3f dir = b->position - a->position;
 	float d = dir.length();
@@ -18,8 +20,8 @@ void DistanceConstraint::update() {
 	dir *= f;
 	
 	// okay now apply the force
-	a->addForce(dir);
-	b->addForce(-dir);
+	a->addDisplacement(dir);
+	b->addDisplacement(-dir);
 }
 
 void DistanceConstraint::draw() {

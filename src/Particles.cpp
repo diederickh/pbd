@@ -15,10 +15,10 @@ void Particles::addConstraint(Constraint* pConstraint) {
 
 // add a vec3 force.
 // -----------------------------------
-void Particles::addForce(ofVec3f oForce) {
+void Particles::addDisplacement(ofVec3f oDisplacement) {
 	vector<Particle*>::iterator it = particles.begin();
 	while(it != particles.end()) {
-		(*it)->addForce(oForce);
+		(*it)->addDisplacement(oDisplacement);
 		++it;
 	}
 }
@@ -52,17 +52,17 @@ void Particles::draw() {
 // -----------------------------------
 void Particles::update() {
 
-	// project position.
+	// project position:
 	{
 		vector<Particle*>::iterator it = particles.begin();
 		while(it != particles.end()) {
 			Particle& particle = **it;
 
 			// prediction step
-			particle.velocity += particle.forces;
+			particle.velocity += particle.displacement;
 			particle.predicted_position = particle.position + particle.velocity;
 
-			particle.forces.set(0,0,0);
+			particle.displacement.set(0,0,0);
 			++it;
 		}
 	}

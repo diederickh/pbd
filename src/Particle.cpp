@@ -3,7 +3,7 @@ Particle::Particle(ofVec3f oPosition, float nMass)
 :position(oPosition)
 ,mass(nMass)
 ,velocity(0,0,0)
-,forces(0,0,0)
+,displacement(0,0,0)
 {
 	if(mass <= 0.0) {	
 		mass = 0.001;
@@ -11,8 +11,8 @@ Particle::Particle(ofVec3f oPosition, float nMass)
 	inverse_mass = 1/mass;
 }
 
-void Particle::addForce(ofVec3f oForce) {
-	forces += (oForce * inverse_mass);
+void Particle::addDisplacement(ofVec3f oDisplacement) {
+	displacement += oDisplacement;
 }
 
 void Particle::update() {
