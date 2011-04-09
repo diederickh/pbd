@@ -7,12 +7,13 @@ class Particles {
 public:
 	Particles();
 	void addParticle(Particle* pParticle);
-	void update();
+	void update(float dt = 0.02f);
 	void draw();
-	void addForce(ofVec3f oForce);
-	void addDisplacement(ofVec3f oDisplacement);
+
 	void addConstraint(Constraint* pConstraint);
 	
 	vector<Constraint*> constraints;
 	vector<Particle*>particles;
+	ofVec3f grav;
+	float damping;
 };

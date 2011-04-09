@@ -4,16 +4,13 @@
 class Particle {
 public:
 	Particle(ofVec3f oPosition, float nMass);
-	void addForce(ofVec3f oForce);
-	void addDisplacement(ofVec3f oDisplacement);
 	void draw();
 	void update();
 	
-	ofVec3f forces;
-	ofVec3f displacement;
-	ofVec3f predicted_position;
-	ofVec3f position;
-	ofVec3f velocity;
+	ofVec3f tmp_pos;
+	ofVec3f pos;
+	ofVec3f vel;
 	float mass;
-	float inverse_mass;
+	float inv_mass;
+	bool disabled;
 };

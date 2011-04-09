@@ -4,10 +4,12 @@
 #include "Particles.h"
 #include "Particle.h"
 #include "DistanceConstraint.h"
+#include "Cloth.h"
 
 class testApp : public ofBaseApp{
 
 	public:
+		testApp();
 		void setup();
 		void update();
 		void draw();
@@ -25,5 +27,5 @@ class testApp : public ofBaseApp{
 		bool follow;
 		bool record;
 		int frame_num;
-		
+		Cloth cloth;		
 };

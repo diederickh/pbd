@@ -1,8 +1,13 @@
 #include "testApp.h"
 
+testApp::testApp()
+:cloth(45,30,20)
+{
+}
+
 //--------------------------------------------------------------
 void testApp::setup(){
-	ofSetFrameRate(45);
+	ofSetFrameRate(65);
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	ofBackground(0xfb, 0xec, 0xc0);
@@ -13,8 +18,9 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update(){
-	particles.addForce(ofVec3f(0,0.5,0));
-	for(int i = 0; i < 5; ++i) particles.update();
+	ofSetWindowTitle(ofToString(ofGetFrameRate()));
+	particles.update(0.02);
+	cloth.update();
 }
 
 //--------------------------------------------------------------
@@ -26,6 +32,7 @@ void testApp::draw(){
 		ofSaveScreen(buf);
 		++frame_num;
 	}
+	cloth.draw();
 }
 
 //--------------------------------------------------------------
@@ -46,8 +53,8 @@ void testApp::keyReleased(int key){
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y ){
 	if(particles.particles.size() >= 1 && follow) {
-		particles.particles.at(0)->position.set(x,y,0);
-		particles.particles.at(0)->displacement.set(0,0,0);
+		particles.particles.at(0)->pos.set(x,y,0);
+		//particles.particles.at(0)->displacement.set(0,0,0);
 	}
 }
 
@@ -68,7 +75,8 @@ void testApp::mousePressed(int x, int y, int button){
 		particles.addConstraint(dist_constraint);
 	}
 	else {
-		particles.particles.back()->inverse_mass = 0;
+		particles.particles.back()->inv_mass = 0;
+		particles.particles.back()->disabled = true;
 	}
 }
 

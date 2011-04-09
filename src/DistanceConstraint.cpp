@@ -6,30 +6,31 @@ DistanceConstraint::DistanceConstraint(Particle* pA, Particle* pB)
 ,b(pB)
 ,Constraint()
 {
-	rest_length = (b->position - a->position).length();
+	rest_length = (b->pos - a->pos).length();
 	k = 0.1;
 }
 
+void DistanceConstraint::update(float dt) {
+	ofVec3f dir = (b->tmp_pos - a->tmp_pos);
+	float const len = dir.length();
+	float const inv_mass = a->inv_mass + b->inv_mass;
+	float const f = ((rest_length - len ) / inv_mass) * 0.1;
 
-// lines 9-11
-void DistanceConstraint::update() {
-	ofVec3f dir = b->predicted_position - a->predicted_position;
-	
-	float d = dir.length();
-	float f = (rest_length - d) * k;
-	dir.normalize();
-	dir *= f;
-	
-	// okay now apply the force
-	a->addDisplacement(-dir);
-	b->addDisplacement(dir);
+	dir *= (f / len); // normalize + multiply by force factor.
+	if(!a->disabled) {
+		a->tmp_pos -= (dir * a->inv_mass);
+	}
+	if(!b->disabled) {
+		b->tmp_pos += (dir * b->inv_mass);
+	}
+	return;
 }
 
 void DistanceConstraint::draw() {
 	glColor4f(0.3, 0.3, 0.3, 0.6f);
 	glBegin(GL_LINES);
-		glVertex3fv(a->position.getPtr());
-		glVertex3fv(b->position.getPtr());
+		glVertex3fv(a->pos.getPtr());
+		glVertex3fv(b->pos.getPtr());
 	glEnd();
 	glColor3f(1,1,1);
 }
