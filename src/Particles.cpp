@@ -2,7 +2,10 @@
 #include "Particle.h"
 #include "Particles.h"
 
-Particles::Particles() {
+Particles::Particles()
+:grav(0,9.82f, .0f)
+,damping(0.99f)
+{
 }
 
 void Particles::addParticle(Particle* pParticle) {
@@ -13,25 +16,7 @@ void Particles::addConstraint(Constraint* pConstraint) {
 	constraints.push_back(pConstraint);
 }
 
-// add a vec3 force.
-// -----------------------------------
-void Particles::addDisplacement(ofVec3f oDisplacement) {
-	vector<Particle*>::iterator it = particles.begin();
-	while(it != particles.end()) {
-		(*it)->addDisplacement(oDisplacement);
-		++it;
-	}
-}
-
-void Particles::addForce(ofVec3f oForce) {
-	vector<Particle*>::iterator it = particles.begin();
-	while(it != particles.end()) {
-		(*it)->addForce(oForce);
-		++it;
-	}
-}
-
-// draw the particles (using simple GL_POIINTS now 
+// draw the particles (using simple GL_POINTS now 
 // ------------------------------------------------
 void Particles::draw() {
 
@@ -57,49 +42,37 @@ void Particles::draw() {
 
 // Solve
 // -----------------------------------
-void Particles::update() {
-	float dt = 1;
-	// project position:
-	{
-		vector<Particle*>::iterator it = particles.begin();
-		while(it != particles.end()) {
-			Particle& particle = **it;
-
-			// prediction step
-			particle.velocity += particle.forces;
-			particle.velocity += particle.displacement;
-			particle.predicted_position = particle.position + (particle.velocity * dt);
-
-			particle.displacement.set(0,0,0);
-			particle.forces.set(0,0,0);
-			++it;
+void Particles::update(float dt) {
+	float inv_dt = 1/dt;
+	grav.z = (sin(ofGetElapsedTimef()*1.3)*15);
+	// predict locations (semi implicit euler
+	for(int i = 0; i < particles.size(); ++i) {
+		Particle& p = *(particles[i]);
+		if(p.disabled) {
+			p.tmp_pos = p.pos;
+		}
+		else {
+			p.vel += grav * dt;
+			p.tmp_pos = p.pos + (p.vel * damping * dt);
+		}
+	}	 
+	
+	// constraints.
+	for(int j = 0; j < 3; ++j) {
+		for(int i = 0; i < constraints.size(); ++i) {
+			constraints.at(i)->update(dt);
 		}
 	}
-	
-	// project constraints.
-	{
-		vector<Constraint*>::iterator it = constraints.begin();
-		while(it != constraints.end()) {
-			(*it)->update();
-			++it;
+			
+	// update velocity+pos
+	for(int i = 0; i < particles.size(); ++i) {
+		Particle&p = *particles[i];
+		if(p.disabled) {
+			continue;
 		}
-	}	
-
-	// update position.
-	{
-		vector<Particle*>::iterator it = particles.begin();
-		while(it != particles.end()) {
-			Particle& particle = **it;
-			// add displacement
-			// ---------------------------------
-			// ---------------------------------
-			particle.velocity = (particle.predicted_position - particle.position)/dt;
-			particle.position = particle.predicted_position;
-			particle.velocity *= 0.98;
-			++it;
-		}
+		p.vel = (p.tmp_pos - p.pos) * inv_dt;
+		p.pos = p.tmp_pos;
+		p.tmp_pos.set(0,0,0);
 	}
-
-	
 
 }

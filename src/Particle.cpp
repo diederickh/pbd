@@ -1,25 +1,19 @@
 #include "Particle.h"
 Particle::Particle(ofVec3f oPosition, float nMass)
-:position(oPosition)
+:pos(oPosition)
+,tmp_pos(0,0,0)
 ,mass(nMass)
-,velocity(0,0,0)
-,displacement(0,0,0)
+,vel(0,0,0)
+,disabled(false)
 {
 	if(mass <= 0.0) {	
 		mass = 0.001;
-		inverse_mass = 0;
+		inv_mass = 0;
+		disabled = true;
 	}
 	else {
-		inverse_mass = 1/mass;
+		inv_mass = 1/mass;
 	}
-}
-
-void Particle::addForce(ofVec3f oForce) {
-	forces += (oForce * inverse_mass);
-}
-
-void Particle::addDisplacement(ofVec3f oDisplacement) {
-	displacement += (oDisplacement * inverse_mass);
 }
 
 void Particle::update() {
@@ -30,7 +24,7 @@ void Particle::draw() {
 	glColor3f(1,0,0);
 	glPointSize(4);
 	glBegin(GL_POINTS);
-	glVertex3fv(position.getPtr());
+	glVertex3fv(pos.getPtr());
 	glEnd();
 	glColor3f(1,1,1);
 	glPointSize(1);
