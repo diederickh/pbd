@@ -21,7 +21,13 @@ void Particle::update() {
 }
 
 void Particle::draw() {
-	glColor3f(1,0,0);
+	if(disabled) {
+		glColor3f(1,0,0);
+	}
+	else {
+		glColor3f(0,1,0);
+	}
+	
 	glPointSize(4);
 	glBegin(GL_POINTS);
 	glVertex3fv(pos.getPtr());

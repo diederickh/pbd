@@ -1,7 +1,7 @@
 #include "testApp.h"
 
 testApp::testApp()
-:cloth(45,30,20)
+:cloth(10,10,50)
 {
 }
 
@@ -11,9 +11,19 @@ void testApp::setup(){
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	ofBackground(0xfb, 0xec, 0xc0);
+	ofBackground(0x33, 0x33, 0x33);
 	follow = false;
 	record = false;
 	frame_num = 0;
+	
+	settings = ofxTweakbars::create("settings","settings");
+	settings->addQuat4f("quater", &rot.x)->setLabel("Rotation");
+	settings->load();
+	
+	cam = translate(cam, vec3(-(float)cloth.width*0.25,(float)cloth.height*0.25 + 100,-900));
+	persp = perspective(45.0f, (float)ofGetWidth()/ofGetHeight(), 1.0f, 4000.0f);
+	record = true;
+	ofxTweakbars::hide();
 }
 
 //--------------------------------------------------------------
@@ -25,6 +35,12 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(value_ptr(persp));
+	glMatrixMode(GL_MODELVIEW);
+	mat4 qrot = cam * mat4_cast(rot);
+	glLoadMatrixf(value_ptr(qrot));
+	cloth.draw();	
 	particles.draw();
 	if(record) {
 		char buf[512];
@@ -32,7 +48,8 @@ void testApp::draw(){
 		ofSaveScreen(buf);
 		++frame_num;
 	}
-	cloth.draw();
+
+	ofxTweakbars::draw();
 }
 
 //--------------------------------------------------------------
@@ -43,6 +60,18 @@ void testApp::keyPressed(int key){
 	else if(key == 'r') {
 		record = !record;
 	}
+	else if (key == 'i') {
+		// invert grav.
+		if(cloth.particles.grav.z < 0 || cloth.particles.grav.z == 0) {
+			cloth.particles.grav.z	= 34;
+		}
+		else {
+			cloth.particles.grav.z = -34;
+		}
+//		cloth.particles.grav.y *= -1;
+		cout << cloth.particles.grav << endl;	
+	}
+	
 }
 
 //--------------------------------------------------------------
@@ -65,19 +94,6 @@ void testApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-	particles.addParticle(new Particle(ofVec3f(x,y, 0), 1));
-	int size = particles.particles.size();
-	if(size > 1) {
-		DistanceConstraint* dist_constraint = new DistanceConstraint(
-			 particles.particles.at(size-2)
-			,particles.particles.at(size-1)
-		);
-		particles.addConstraint(dist_constraint);
-	}
-	else {
-		particles.particles.back()->inv_mass = 0;
-		particles.particles.back()->disabled = true;
-	}
 }
 
 //--------------------------------------------------------------

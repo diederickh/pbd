@@ -3,7 +3,7 @@
 #include "Particles.h"
 
 Particles::Particles()
-:grav(0,9.82f, .0f)
+:grav(0,-39.82f, .0f) // 9.82f
 ,damping(0.99f)
 {
 }
@@ -43,8 +43,9 @@ void Particles::draw() {
 // Solve
 // -----------------------------------
 void Particles::update(float dt) {
+	
 	float inv_dt = 1/dt;
-	grav.z = (sin(ofGetElapsedTimef()*1.3)*15);
+	//grav.y = (sin(ofGetElapsedTimef()*0.6)*5);
 	// predict locations (semi implicit euler
 	for(int i = 0; i < particles.size(); ++i) {
 		Particle& p = *(particles[i]);
@@ -52,6 +53,7 @@ void Particles::update(float dt) {
 			p.tmp_pos = p.pos;
 		}
 		else {
+
 			p.vel += grav * dt;
 			p.tmp_pos = p.pos + (p.vel * damping * dt);
 		}

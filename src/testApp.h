@@ -5,7 +5,10 @@
 #include "Particle.h"
 #include "DistanceConstraint.h"
 #include "Cloth.h"
+#include "ofxOpenGLMath.h"
+#include "ofxTweakbarIncludes.h"
 
+using namespace glm;
 class testApp : public ofBaseApp{
 
 	public:
@@ -27,5 +30,11 @@ class testApp : public ofBaseApp{
 		bool follow;
 		bool record;
 		int frame_num;
-		Cloth cloth;		
+		Cloth cloth;	
+		
+		ofxTweakbar* settings;
+		
+		mat4 persp;
+		mat4 cam;
+		quat rot;
 };

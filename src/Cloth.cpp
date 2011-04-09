@@ -4,23 +4,24 @@ Cloth::Cloth(int nCols, int nRows, int nSize)
 :cols(nCols)
 ,rows(nRows)
 ,size(nSize)
+,width(cols * nSize)
+,height(rows * nSize)
 {
 	// create particles.
 	for(int j = 0; j < rows; ++j) {
 		for(int i = 0 ; i < cols; ++i) {
-			ofVec3f pos(40+i * size, 40+j * size, 0);
+			ofVec3f pos(i * size, 0 ,j * size);
 			Particle* part = new Particle(pos,1);
-			if(j == 0 || j == (rows-1) || i == 0 || i == (cols-1)) {
+			//if(j == 0 || j == (rows-1) || i == 0 || i == (cols-1)) {
+			if(j == 0 || j == 1) {
 				part->disabled = true;
 				part->inv_mass = .0f;
 			}
-			
 			particles.addParticle(part);
-			
 		}	
 	}
 	
-	// create constraints.
+	// create distance constraints.
 	for(int i = 0; i < cols; ++i) {
 		for(int j = 0; j < rows; ++j) {
 			if(i < cols-1) {
@@ -31,6 +32,14 @@ Cloth::Cloth(int nCols, int nRows, int nSize)
 				DistanceConstraint* con = new DistanceConstraint(&getAt(i,j), &getAt(i,j+1));
 				particles.addConstraint(con);
 			}
+		}
+	}
+	
+	// create bending constraints
+	for(int i = 0; i < cols; ++i) {
+		for(int j = 0; j < rows-2; ++j) {
+			BendingConstraint* con = new BendingConstraint(&getAt(i,j), &getAt(i, j+1), &getAt(i, j+2));
+			particles.addConstraint(con);
 		}
 	}
 }

@@ -27,7 +27,7 @@ void DistanceConstraint::update(float dt) {
 }
 
 void DistanceConstraint::draw() {
-	glColor4f(0.3, 0.3, 0.3, 0.6f);
+	glColor4f(0.7, 0.7, 0.7, 0.6f);
 	glBegin(GL_LINES);
 		glVertex3fv(a->pos.getPtr());
 		glVertex3fv(b->pos.getPtr());

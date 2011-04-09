@@ -3,6 +3,7 @@
 #include "Particles.h"
 #include "Particle.h"
 #include "DistanceConstraint.h"
+#include "BendingConstraint.h"
 
 class Cloth {
 public:
@@ -16,4 +17,6 @@ public:
 	int const rows;
 	int const cols;
 	int const size;
+	int const width;
+	int const height;
 };
