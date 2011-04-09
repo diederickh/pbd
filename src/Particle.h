@@ -6,7 +6,7 @@ public:
 	Particle(ofVec3f oPosition, float nMass);
 	void draw();
 	void update();
-	
+	void addForce(ofVec3f oForce);
 	ofVec3f tmp_pos;
 	ofVec3f pos;
 	ofVec3f vel;

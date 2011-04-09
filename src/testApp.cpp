@@ -1,7 +1,8 @@
 #include "testApp.h"
 
 testApp::testApp()
-:cloth(20,20,10)
+:cloth(60,40,20)
+,cloth_gl(cloth)
 {
 }
 
@@ -12,6 +13,7 @@ void testApp::setup(){
 	ofEnableAlphaBlending();
 	ofBackground(0xfb, 0xec, 0xc0);
 	ofBackground(0x33, 0x33, 0x33);
+	debug = true;
 	follow = false;
 	record = false;
 	test_force = false;
@@ -23,13 +25,31 @@ void testApp::setup(){
 	
 	cam = translate(cam, vec3(-(float)cloth.width*0.25,(float)cloth.height*0.25 + 100,-900));
 	persp = perspective(45.0f, (float)ofGetWidth()/ofGetHeight(), 1.0f, 4000.0f);
+	cloth_gl.setup();
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
 	ofSetWindowTitle(ofToString(ofGetFrameRate()));
 	particles.update(0.02);
+	if(test_force && cloth.particles.particles.size() > 100) {
+
+		ofVec3f f(0,0,-70);
+		for(int i = 8; i < 10; ++i) {
+			for(int j = 8; j < 10; ++j) {
+				cloth.getAt(i,j).addForce(f);
+			}
+		}
+		for(int i = 20; i < 28; ++i) {
+			for(int j = 8; j < 16; ++j) {
+				cloth.getAt(i,j).addForce(f*-1);
+			}
+		}
+
+	}
+	
 	cloth.update();
+	cloth_gl.update();
 }
 
 //--------------------------------------------------------------
@@ -39,7 +59,13 @@ void testApp::draw(){
 	glMatrixMode(GL_MODELVIEW);
 	mat4 qrot = cam * mat4_cast(rot);
 	glLoadMatrixf(value_ptr(qrot));
-	cloth.draw();	
+	glEnable(GL_DEPTH_TEST);
+	if(debug){
+		cloth.draw();	
+	}
+	else {
+		cloth_gl.draw();
+	}
 	particles.draw();
 	if(record) {
 		char buf[512];
@@ -70,6 +96,9 @@ void testApp::keyPressed(int key){
 	}
 	else if(key == 't') {
 		test_force = !test_force;
+	}
+	else if(key == 'd') {
+		debug = !debug;
 	}
 	
 }

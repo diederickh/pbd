@@ -7,14 +7,14 @@ DistanceConstraint::DistanceConstraint(Particle* pA, Particle* pB)
 ,Constraint()
 {
 	rest_length = (b->pos - a->pos).length();
-	k = 0.1;
+	k = 0.65;
 }
 
 void DistanceConstraint::update(float dt) {
 	ofVec3f dir = (b->tmp_pos - a->tmp_pos);
 	float const len = dir.length();
 	float const inv_mass = a->inv_mass + b->inv_mass;
-	float const f = ((rest_length - len ) / inv_mass) * 0.1;
+	float const f = ((rest_length - len ) / inv_mass) * k;
 
 	dir *= (f / len); // normalize + multiply by force factor.
 	if(!a->disabled) {

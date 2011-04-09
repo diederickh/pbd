@@ -7,6 +7,7 @@
 #include "Cloth.h"
 #include "ofxOpenGLMath.h"
 #include "ofxTweakbarIncludes.h"
+#include "ClothGL.h"
 
 using namespace glm;
 class testApp : public ofBaseApp{
@@ -31,7 +32,9 @@ class testApp : public ofBaseApp{
 		bool record;
 		int frame_num;
 		Cloth cloth;	
+		ClothGL cloth_gl;
 		
+		bool debug;
 		bool test_force;
 		ofxTweakbar* settings;
 		

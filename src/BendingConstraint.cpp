@@ -12,7 +12,7 @@ BendingConstraint::BendingConstraint(
 	w = a->inv_mass + c->inv_mass + (2*b->inv_mass);
 	center = 0.3333 * (a->pos + b->pos + c->pos);
 	rest_length = (a->pos - center).length();
-	cout << "rest length:" << rest_length << endl;
+	//cout << "rest length:" << rest_length << endl;
 }
 
 void BendingConstraint::draw() {

@@ -10,10 +10,10 @@ Cloth::Cloth(int nCols, int nRows, int nSize)
 	// create particles.
 	for(int j = 0; j < rows; ++j) {
 		for(int i = 0 ; i < cols; ++i) {
-			ofVec3f pos(i * size, 0 ,j * size);
+			ofVec3f pos(i * size, -(j * size), 0);
 			Particle* part = new Particle(pos,1.0f);
-			//if(j == 0 || j == (rows-1) || i == 0 || i == (cols-1)) {
-			if(j == 0 || j == 1) {
+			if(j == 0 || j == (rows-1) || i == 0 || i == (cols-1)) {
+			//if(j == 0 || j == 1) {
 				part->disabled = true;
 				part->inv_mass = .0f;
 			}

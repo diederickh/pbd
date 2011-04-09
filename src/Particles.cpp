@@ -3,7 +3,7 @@
 #include "Particles.h"
 
 Particles::Particles()
-:grav(0,-39.82f, .0f) // 9.82f
+:grav(.0f,.0f, .0f) // 9.82f
 ,damping(0.99f)
 {
 }

@@ -16,6 +16,10 @@ Particle::Particle(ofVec3f oPosition, float nMass)
 	}
 }
 
+void Particle::addForce(ofVec3f oForce) {
+	vel += (oForce*inv_mass);
+}
+
 void Particle::update() {
 	
 }
