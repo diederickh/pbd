@@ -32,6 +32,7 @@ class testApp : public ofBaseApp{
 		int frame_num;
 		Cloth cloth;	
 		
+		bool test_force;
 		ofxTweakbar* settings;
 		
 		mat4 persp;

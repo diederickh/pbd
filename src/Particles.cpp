@@ -43,9 +43,8 @@ void Particles::draw() {
 // Solve
 // -----------------------------------
 void Particles::update(float dt) {
-	
 	float inv_dt = 1/dt;
-	//grav.y = (sin(ofGetElapsedTimef()*0.6)*5);
+
 	// predict locations (semi implicit euler
 	for(int i = 0; i < particles.size(); ++i) {
 		Particle& p = *(particles[i]);

@@ -1,7 +1,7 @@
 #include "testApp.h"
 
 testApp::testApp()
-:cloth(10,10,50)
+:cloth(20,20,10)
 {
 }
 
@@ -14,6 +14,7 @@ void testApp::setup(){
 	ofBackground(0x33, 0x33, 0x33);
 	follow = false;
 	record = false;
+	test_force = false;
 	frame_num = 0;
 	
 	settings = ofxTweakbars::create("settings","settings");
@@ -22,8 +23,6 @@ void testApp::setup(){
 	
 	cam = translate(cam, vec3(-(float)cloth.width*0.25,(float)cloth.height*0.25 + 100,-900));
 	persp = perspective(45.0f, (float)ofGetWidth()/ofGetHeight(), 1.0f, 4000.0f);
-	record = true;
-	ofxTweakbars::hide();
 }
 
 //--------------------------------------------------------------
@@ -68,8 +67,9 @@ void testApp::keyPressed(int key){
 		else {
 			cloth.particles.grav.z = -34;
 		}
-//		cloth.particles.grav.y *= -1;
-		cout << cloth.particles.grav << endl;	
+	}
+	else if(key == 't') {
+		test_force = !test_force;
 	}
 	
 }

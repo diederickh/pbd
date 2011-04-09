@@ -25,21 +25,19 @@ void BendingConstraint::draw() {
 
 	
 	// draw "c"
-	/*
 	glColor3f(0,1,1);
-	glPointSize(8);
+	glPointSize(3);
 	glBegin(GL_POINTS);
 		glVertex3fv(&center.x);
 	glEnd();
 	glPointSize(1);
-	*/
 
 	glColor3f(1,1,1);
 }
 
 
 void BendingConstraint::update(float dt) {	
-	float global_k = -10.01;
+	float global_k = 10.01;
 	int num_iter = 3;
 	float k = 0;
 
